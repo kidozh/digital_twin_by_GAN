@@ -29,6 +29,8 @@ Since it's not as intuitive as image, it's hard for human to identify but maybe 
 
 Please feel free to contact with me in mail and issue way about academic consult. Also fork is welcomed. Other things involved with cooperation with certain region may be restricted under NPU's related regulation.
 
+Here is a demonstration of restricted area or person.
+
 # LICENSE
 
 MIT LICENSE
