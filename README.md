@@ -1,11 +1,11 @@
 # Digital Twins by Generative Adversarial Nets
 
-This project is aimed to simulate tool wear in digital way. We want to simulate signal in machining process so that we can do that in the following:
+This project is aimed to simulate tool wear in digital way. We want to simulate signal in machining process so that we can do those in the following:
 
++ simulate signal in machining process
 + reinforcement learning in small data
 + visualization on deep learning model
-+ simulate signal in machining process
-+ transfer learning at few data
++ transfer learning at very few data
 
 We use DCGAN model with tool wear label to achieve that. GAN training is fast and the validity of simulated result will be tested later.
 
@@ -29,7 +29,7 @@ Since it's not as intuitive as image, it's hard for human to identify but maybe 
 
 Please feel free to contact with me in mail and issue way about academic consult. Also fork is welcomed. Other things involved with cooperation with certain region may be restricted under NPU's related regulation.
 
-Here is a demonstration of restricted area or person.
+[Here](https://kidozh.com/keras_detect_tool_wear/epidemic_prevention_notice.html) is a demonstration of restricted area or people.
 
 # LICENSE
 
