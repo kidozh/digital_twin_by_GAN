@@ -27,7 +27,7 @@ you can find result in directory `res`. It includes trained model and signal pic
 
 Since it's not as intuitive as image, it's hard for human to identify but maybe easy for ResNet model.
 
-# For newly-designed ResNet
+## For newly-designed ResNet
 
 MSE is 0.630 while MAE is 0.417.
 
