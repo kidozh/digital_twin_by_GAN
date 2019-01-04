@@ -242,10 +242,43 @@ class DCGAN():
             open(options['file_arch'], 'w').write(json_string)
             model.save_weights(options['file_weight'])
 
-        save(self.generator, "soft_dcgan_generator")
-        save(self.discriminator, "soft_dcgan_discriminator")
+        save(self.generator, "soft_dcgan_generator_4e5")
+        save(self.discriminator, "soft_dcgan_discriminator_4e5")
+
+    def load_model(self):
+
+        def load(model,model_name):
+            weights_path = "saved_model/%s_weights.hdf5" % model_name
+            model.load_weights(weights_path)
+
+        load(self.generator, "soft_dcgan_generator")
+        load(self.discriminator, "soft_dcgan_discriminator")
+
+
+    def generate_and_test_signal(self):
+        batch_number = 300
+        noise = np.random.normal(0, 1, (batch_number, self.latent_dim))
+        sampled_labels = np.arange(0, 300 ).reshape(-1, 1)
+        gen_imgs = self.generator.predict([noise, sampled_labels])
+        from keras.models import load_model
+        resnet = load_model("saved_model/Resnet.kerasmodel")
+        import pywt
+        A2, D2, D1 = pywt.wavedec(gen_imgs, 'db4', mode='symmetric', level=2, axis=1)
+        print(A2.shape,D2.shape,D1.shape)
+        y_pred = resnet.predict([A2,D2,D1])
+        print(y_pred.max(axis=1).shape,y_pred.shape)
+        import matplotlib.pyplot as plt
+        fig = plt.figure()
+        plt.plot(sampled_labels,label="Aimed Tool wear")
+        plt.plot(y_pred.max(axis=1),label="Predicted by ResNet")
+        plt.legend()
+        plt.show()
+
+
+
 
 
 if __name__ == '__main__':
     dcgan = DCGAN()
-    dcgan.train(epochs=4000, batch_size=32, save_interval=50)
+    dcgan.generate_and_test_signal()
+    # dcgan.train(epochs=40000, batch_size=32, save_interval=50)

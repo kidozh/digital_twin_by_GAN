@@ -11,19 +11,31 @@ We use DCGAN model with tool wear label to achieve that. GAN training is fast an
 
 ## attention
 
-Since sensor signal is totally different from vision, many adjustment for 1D signal and working condition is done. Be careful if you want to reuse this code to your environment.
+Since sensor signal is totally different from vision, many adjustments for 1D signal and our working condition is done. Be careful if you want to reuse this code to your environment.
 
 # Demonstrate
 
 We will post a beamer (localized in simplified Chinese) to demonstrate our idea, trick and work about this.
 
-A homepage will be conducted after that.
+A homepage will be posted after that.
 
 # Result 
+
+## For GAN
 
 you can find result in directory `res`. It includes trained model and signal pictures generated for different tool wear stage. The signal is displayed in 7 dimension corresponding to sub-directory.
 
 Since it's not as intuitive as image, it's hard for human to identify but maybe easy for ResNet model.
+
+# For newly-designed ResNet
+
+MSE is 0.630 while MAE is 0.417.
+
+![Teeth 1 of tool # 1](High_Res_0_tool_@_1_teeth_ZH.svg)
+
+![Teeth 1 of tool # 4](High_Res_1_tool_@_1_teeth_ZH.svg)
+
+![Teeth 1 of tool # 6](High_Res_1_tool_@_1_teeth_ZH.svg)
 
 # Contact
 
