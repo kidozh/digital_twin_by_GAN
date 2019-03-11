@@ -55,12 +55,164 @@ class PHMToolWearDataset():
 
         return np.concatenate((all_data,extend_signal),axis=0),np.concatenate((tool_wear_data,extend_tool_wear),axis=0)
 
+    def get_recoginition_data(self):
+        x,y = self.get_extended_data
+        y = y.max(axis=1)
+        tool_wear_peroid = np.zeros(y.shape,dtype=np.int)
+        i = 30
+        cnt = 0
+        STEP = 2
+        # 31 - 234
+        class_num = 105
+        # 0-102
+        while i < 240:
+            class_index = np.logical_and(y > i,y <= i+STEP)
+            tool_wear_peroid[class_index] = cnt
+            i += STEP
+            cnt += 1
+        print(y.shape,tool_wear_peroid.shape)
+        return x,tool_wear_peroid
+
+    def get_native_recoginition_data(self):
+        x = self.get_signal_data
+        y = self.get_tool_wear_data
+        # x,y = self.get_extended_data
+        y = y.max(axis=1)
+        tool_wear_peroid = np.zeros(y.shape,dtype=np.int)
+        i = 30
+        cnt = 0
+        STEP = 2
+        # 31 - 234
+        class_num = 105
+        # 0-102
+        while i < 240:
+            class_index = np.logical_and(y > i,y <= i+STEP)
+            tool_wear_peroid[class_index] = cnt
+            i += STEP
+            cnt += 1
+        print(y.shape,tool_wear_peroid.shape)
+        return x,tool_wear_peroid
+
+    def get_native_recoginition_data_in_class_num(self,class_num=10):
+        x = self.get_signal_data
+        y = self.get_tool_wear_data
+        # x,y = self.get_extended_data
+        y = y.max(axis=1)
+        tool_wear_peroid = np.zeros(y.shape,dtype=np.int)
+        i = 30
+        cnt = 0
+        STEP = (240-30)/ class_num
+        # 31 - 234
+
+        # 0-102
+        while i < 240:
+            class_index = np.logical_and(y > i,y <= i+STEP)
+            tool_wear_peroid[class_index] = cnt
+            i += STEP
+            cnt += 1
+        assert cnt == class_num
+        print(y.shape,tool_wear_peroid.shape)
+        return x,tool_wear_peroid
+
+    def get_recoginition_data_in_class_num(self,class_num=10):
+        x, y = self.get_extended_data
+        # x,y = self.get_extended_data
+        y = y.max(axis=1)
+        tool_wear_peroid = np.zeros(y.shape,dtype=np.int)
+        i = 30
+        cnt = 0
+        STEP = (240-30) / class_num
+        # 31 - 234
+
+        # 0-102
+        while i < 240:
+            class_index = np.logical_and(y > i,y <= i+STEP)
+            tool_wear_peroid[class_index] = cnt
+            i += STEP
+            cnt += 1
+        print("Set apart... ",cnt,class_num,STEP,tool_wear_peroid.max(),tool_wear_peroid.min())
+        # assert cnt - 1 == class_num
+        print(y.shape,tool_wear_peroid.shape)
+        return x,tool_wear_peroid
+
+    def get_reinforce_short_extend_data(self):
+        x, y = self.get_extended_data
+        print(x.shape,y.shape)
+        index = np.array([i for i in range(0,5000,10)])
+        # print(index)
+        reinforce_signal_data = []
+        reinforce_wear_data = []
+        MAX_SAMPLE_NUM = x.shape[0]
+        for data_idx in range(x.shape[0]):
+            tool_max_wear = y[data_idx].max()
+            cur_signal_data = x[data_idx]
+            cur_wear_data = y[data_idx]
+            if data_idx // (MAX_SAMPLE_NUM // 3) == 0:
+                # first wear filter
+                if tool_max_wear > 110 and tool_max_wear < 120:
+                    reinforce_signal_data.append(cur_signal_data[::10,:])
+                    reinforce_wear_data.append(cur_wear_data)
+                else:
+                    # get reinforce
+                    for stride_index in range(10):
+                        reinforce_signal_data.append(cur_signal_data[index+stride_index])
+                        reinforce_wear_data.append(cur_wear_data)
+            elif data_idx // (MAX_SAMPLE_NUM // 3) == 1:
+                # first wear filter
+                if tool_max_wear > 110 and tool_max_wear < 120:
+                    reinforce_signal_data.append(cur_signal_data[::10,:])
+                    reinforce_wear_data.append(cur_wear_data)
+                else:
+                    # get reinforce
+                    for stride_index in range(10):
+                        reinforce_signal_data.append(cur_signal_data[index+stride_index])
+                        reinforce_wear_data.append(cur_wear_data)
+
+            else:
+                # first wear filter
+                if tool_max_wear > 110 and tool_max_wear < 120:
+                    reinforce_signal_data.append(cur_signal_data[::10,:])
+                    reinforce_wear_data.append(cur_wear_data)
+                else:
+                    # get reinforce
+                    for stride_index in range(10):
+                        reinforce_signal_data.append(cur_signal_data[index+stride_index])
+                        reinforce_wear_data.append(cur_wear_data)
+        return np.array(reinforce_signal_data), np.array(reinforce_wear_data)
+
+    def get_reinforce_recoginition_data_in_class_num(self,class_num=10):
+        x, y = self.get_reinforce_short_extend_data()
+        # x,y = self.get_extended_data
+        y = y.max(axis=1)
+        tool_wear_peroid = np.zeros(y.shape,dtype=np.int)
+        i = 30
+        cnt = 0
+        STEP = (240-30) / class_num
+        # 31 - 234
+
+        # 0-102
+        while i < 240:
+            class_index = np.logical_and(y > i,y <= i+STEP)
+            tool_wear_peroid[class_index] = cnt
+            i += STEP
+            cnt += 1
+        print("Set apart... ",cnt,class_num,STEP,tool_wear_peroid.max(),tool_wear_peroid.min())
+        # assert cnt - 1 == class_num
+        print(y.shape,tool_wear_peroid.shape)
+        return x,tool_wear_peroid
 
 if __name__ == "__main__":
     tool_wear_dataset = PHMToolWearDataset()
+    x,y = tool_wear_dataset.get_reinforce_short_extend_data()
+    print(x.shape,y.shape)
+    # tool_wear_dataset.get_recoginition_data()
+    # x = tool_wear_dataset.get_signal_data
+    # print(x.shape)
+    # print(x.max(axis=1).max(axis=0),"\n",x.min(axis=1).min(axis=0))
+
     # tool_wear_data = tool_wear_data.get_tool_wear_data
-    print(tool_wear_dataset.get_extended_data[0].shape,tool_wear_dataset.get_extended_data[1].shape)
-    print(tool_wear_dataset.get_all_data[0].shape, tool_wear_dataset.get_all_data[1].shape)
+    #print(tool_wear_dataset.get_extended_data[0].shape,tool_wear_dataset.get_extended_data[1].shape)
+    #print(tool_wear_dataset.get_all_data[0].shape, tool_wear_dataset.get_all_data[1].shape)
 
 
     # a = RNNSeriesDataSet(2,5)
