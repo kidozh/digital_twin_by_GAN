@@ -15,9 +15,9 @@ Since sensor signal is totally different from vision, many adjustments for 1D si
 
 # Demonstrate
 
-We will post a beamer (localized in simplified Chinese) to demonstrate our idea, trick and work about this.
+You can visit our homepage to know this project better.
 
-A homepage will be posted after that.
+Address : [https://kidozh.com/projects/digital_twins_by_GAN/](https://kidozh.com/projects/digital_twins_by_GAN/)
 
 # Result 
 
